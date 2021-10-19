@@ -14,6 +14,7 @@
     <None Remove="ViewModels\Enrollment\" />
     <None Remove="ViewModels\Student\" />
     <None Remove="ViewModels\Tutor\" />
+    <None Remove="xtEntityFramework" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\" />
@@ -24,6 +25,6 @@
     <Folder Include="ViewModels\Tutor\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\xtEntityFramework\xtEntityFramework.csproj" />
+    <PackageReference Include="xtEntityFramework" Version="1.0.0" />
   </ItemGroup>
 </Project>
