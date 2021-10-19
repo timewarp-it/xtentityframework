@@ -1,0 +1,66 @@
+﻿@using xtEntityFramework.Models
+@typeparam TEntity
+@typeparam TModel
+
+@inject HttpClient Http
+@if (Page == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    
+    <Searcher Page="Page" TEntity="TEntity" TModel="TModel" Update="Update" />
+    <br />
+    <TopFilter Page="Page" TEntity="TEntity" TModel="TModel" Update="Update" />
+    <table class="table">
+        <thead>
+            <tr>
+                @foreach (var prop in Page.Data.GetType().GetGenericArguments().First().GetProperties())
+                {
+                    <th>
+                        @prop.Name
+                        <Sorter Page="Page" PropertyName="@prop.Name" TEntity="TEntity" TModel="TModel" Update="Update" />
+                    </th>
+                }
+            </tr>   
+        </thead>
+        <tbody>
+            @foreach (var row in Page.Data)
+            {
+            <tr>
+                @foreach (var prop in Page.Data.GetType().GetGenericArguments().First().GetProperties())
+                {
+                    var list = prop.GetValue(row) as System.Collections.IList;
+                    if (list != null)
+                    {
+                        <td>@list.Count</td>
+                    }
+                    else
+                    {
+                        <td>@prop.GetValue(row)?.ToString()</td>
+                    }
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+    <Paginator TModel="TModel" TEntity="TEntity" Update="Update" Page="Page" />
+}
+@code {
+    [Parameter]
+    public string RelativeURL { get; set; }
+
+    private Page<TEntity, TModel> Page { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+            Page = await Http.GetFromJsonAsync<Page<TEntity, TModel>>(RelativeURL);
+    }
+
+    private async Task Update()
+    {
+        Page = await Http.GetFromJsonAsync<Page<TEntity, TModel>>($"{ RelativeURL }?{ Page.ToQueryParameters() }");
+    }
+
+}

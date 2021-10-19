@@ -1,0 +1,30 @@
+﻿@using xtEntityFramework.Models
+
+@typeparam TEntity
+@typeparam TModel
+
+<p>Showing <input @bind="@(Page.Size)" @onkeyup="@Update" /> - @(Page.From) to @(Page.To) of @(Page.Rows)</p>
+<button @onclick="(async() => { Page.CurrentPage = 1; await Update.InvokeAsync(); })">1</button>
+@if (Page.CurrentPage > 2)
+{
+    <button @onclick="(async() => { Page.CurrentPage -= 1; await Update.InvokeAsync(); })">@(Page.CurrentPage - 1)</button>
+}
+@if (Page.CurrentPage != 1 && Page.CurrentPage != Page.Pages)
+{
+    <button @onclick="() => Update.InvokeAsync()">@(Page.CurrentPage)</button>
+}
+@if (Page.Pages - Page.CurrentPage > 1)
+{
+    <button @onclick="(async() => { Page.CurrentPage += 1; await Update.InvokeAsync(); })">@(Page.CurrentPage + 1)</button>
+}
+@if (Page.Pages > 1)
+{
+    <button @onclick="(async() => { Page.CurrentPage = Page.Pages; await Update.InvokeAsync(); })">@(Page.Pages)</button>
+}
+@code {
+    [Parameter]
+    public Page<TEntity, TModel> Page { get; set; }
+
+    [Parameter]
+    public EventCallback Update { get; set; }
+}
