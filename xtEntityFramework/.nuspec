@@ -1,0 +1,61 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <!-- Identifier that must be unique within the hosting gallery -->
+        <id>xtEntityFramework</id>
+
+        <!-- Package version number that is used when resolving dependencies -->
+        <version>1.0.1</version>
+
+        <!-- Authors contain text that appears directly on the gallery -->
+        <authors>Marius Steinbach</authors>
+
+        <!-- 
+            Owners are typically nuget.org identities that allow gallery
+            users to easily find other packages by the same owners.  
+        -->
+        <owners>TIMEWARP</owners>
+        
+         <!-- Project URL provides a link for the gallery -->
+        <projectUrl>https://github.com/timewarp-it/xtEntityFramework</projectUrl>
+
+         <!-- License information is displayed on the gallery -->
+        <license type="expression">MIT</license>
+        
+
+        <!-- Icon is used in Visual Studio's package manager UI -->
+        <!--<icon>icon.png</icon>-->
+
+        <!-- 
+            If true, this value prompts the user to accept the license when
+            installing the package. 
+        -->
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+        <!-- Any details about this particular release -->
+        <!--<releaseNotes>Bug fixes and performance improvements</releaseNotes>-->
+
+        <!-- 
+            The description can be used in package manager UI. Note that the
+            nuget.org gallery uses information you add in the portal. 
+        -->
+        <description>Easy to use Library to Filter, Search, Order and Paginate Data with EntityFramework.</description>
+
+        <!-- Copyright information -->
+        <copyright>Copyright ©2021 TIMEWARP IT Consulting GmbH</copyright>
+
+        <!-- Tags appear in the gallery and can be used for tag searches -->
+        <tags>entity framework filter search order page</tags>
+
+        <!-- Dependencies are automatically installed when the package is installed -->
+        <!--<dependencies>
+            <dependency id="AutoMapper" version="9.0" />
+        </dependencies>-->
+    </metadata>
+
+    <!-- A readme.txt to display when the package is installed -->
+    <!--<files>
+        <file src="readme.txt" target="" />
+        <file src="icon.png" target="" />
+    </files>-->
+</package>
