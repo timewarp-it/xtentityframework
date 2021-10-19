@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="ViewModels\" />
+    <None Remove="ViewModels\Course\" />
+    <None Remove="ViewModels\Person\" />
+    <None Remove="ViewModels\Enrollment\" />
+    <None Remove="ViewModels\Student\" />
+    <None Remove="ViewModels\Tutor\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+    <Folder Include="ViewModels\Course\" />
+    <Folder Include="ViewModels\Person\" />
+    <Folder Include="ViewModels\Enrollment\" />
+    <Folder Include="ViewModels\Student\" />
+    <Folder Include="ViewModels\Tutor\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\xtEntityFramework\xtEntityFramework.csproj" />
+  </ItemGroup>
+</Project>

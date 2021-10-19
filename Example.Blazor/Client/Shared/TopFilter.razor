@@ -1,0 +1,39 @@
+﻿@using xtEntityFramework.Models
+@using xtEntityFramework.Attributes
+@using xtEntityFramework
+
+@typeparam TEntity
+@typeparam TModel
+
+
+<select @onchange="PropertyChanged">
+    <option></option>
+    @foreach(var prop in typeof(TEntity).GetProperties().Where(pi => Attribute.IsDefined(pi, typeof(FilterableAttribute))))
+    {
+        <option value="@prop.Name">@prop.Name</option>
+    }
+</select>
+@if (Comparisons != null)
+{
+    <select>
+        <option></option>
+        @foreach (var comparison in Comparisons)
+        {
+            <option value="@comparison">@comparison.ToString()</option>
+        }
+    </select>
+}
+@code {
+    [Parameter]
+    public Page<TEntity, TModel> Page { get; set; }
+
+    [Parameter]
+    public EventCallback Update { get; set; }
+
+    private List<Comparison> Comparisons { get; set; }
+
+    private void PropertyChanged(ChangeEventArgs args)
+    {
+        Comparisons = ComparisonCache.GetComparisons(typeof(TEntity).GetProperties().FirstOrDefault(p => p.Name == args.Value.ToString()).GetType()).ToList();
+    }
+}

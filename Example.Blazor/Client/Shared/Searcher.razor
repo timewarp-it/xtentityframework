@@ -1,0 +1,14 @@
+﻿@using xtEntityFramework.Models
+
+@typeparam TEntity
+@typeparam TModel
+
+
+<input placeholder="Search..." @oninput="(async(EventArgs) => { Page.Search = EventArgs.Value.ToString(); await Update.InvokeAsync(); })" />
+@code {
+    [Parameter]
+    public Page<TEntity, TModel> Page { get; set; }
+
+    [Parameter]
+    public EventCallback Update { get; set; }
+}       
