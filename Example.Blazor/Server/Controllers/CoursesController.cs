@@ -7,6 +7,7 @@ using Example.Blazor.Shared.ViewModels.Course;
 using xtEntityFramework.Extensions;
 using xtEntityFramework.Models;
 using Microsoft.AspNetCore.Mvc;
+using xtEntityFramework;
 
 namespace Example.Blazor.Server.Controllers
 {

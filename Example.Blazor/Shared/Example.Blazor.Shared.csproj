@@ -26,6 +26,6 @@
     <Folder Include="ViewModels\Tutor\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="xtEntityFramework" Version="1.0.0" />
+    <ProjectReference Include="..\..\xtEntityFramework\xtEntityFramework.csproj" />
   </ItemGroup>
 </Project>

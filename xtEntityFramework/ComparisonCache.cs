@@ -64,6 +64,11 @@ namespace xtEntityFramework
 
         private static List<Comparison> GetComparisonsInternal(Type type)
         {
+            if (StandardTypes.ContainsKey(type))
+            {
+                Cache.TryGetValue(type, out var ret);
+                return ret!;
+            }
             return Cache.GetOrAdd(type, t => StandardTypes.ContainsKey(t) ? StandardTypes[t] : new List<Comparison>() { Comparison.Neq });
         }
     }
