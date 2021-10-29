@@ -15,7 +15,7 @@
 </select>
 @if (Comparisons != null)
 {
-    <select>
+    <select @onchange="ComparisonChanged">
         <option></option>
         @foreach (var comparison in Comparisons)
         {
@@ -23,6 +23,7 @@
         }
     </select>
 }
+<input @onchange="ValueChanged" />
 @code {
     [Parameter]
     public Page<TEntity, TModel> Page { get; set; }
@@ -32,8 +33,37 @@
 
     private List<Comparison> Comparisons { get; set; }
 
-    private void PropertyChanged(ChangeEventArgs args)
+    Filter<TEntity> Filter { get; set; } = new Filter<TEntity>();
+
+    protected override void OnInitialized()
     {
-        Comparisons = ComparisonCache.GetComparisons(typeof(TEntity).GetProperties().FirstOrDefault(p => p.Name == args.Value.ToString()).GetType()).ToList();
+        Page.Filters.Filters.Add(Filter);
+
+    }
+
+    private async Task PropertyChanged(ChangeEventArgs args)
+    {
+        Comparisons = ComparisonCache.GetComparisons(typeof(TEntity).GetProperties().FirstOrDefault(p => p.Name == args.Value.ToString()).PropertyType).ToList();
+        Filter.Name = args.Value.ToString();
+        await UpdateFilter();
+    }
+
+    private async Task ComparisonChanged(ChangeEventArgs args)
+    {
+        Filter.Comparison = (Comparison)Enum.Parse(typeof(Comparison), args.Value.ToString());
+        await UpdateFilter();
+    }
+
+    private async Task ValueChanged(ChangeEventArgs args)
+    {
+        Filter.Value = args.Value.ToString();
+        await UpdateFilter();
+    }
+
+    private async Task UpdateFilter()
+    {
+        var f = Page.Filters.Filters?.Last();
+        if (f != null && f.Name != null && f.Value != null)
+            await Update.InvokeAsync();
     }
 }

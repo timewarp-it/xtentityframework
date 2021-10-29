@@ -8,6 +8,7 @@ namespace xtEntityFramework.Models
     public class Page<TEntity, TModel> where TModel : class where TEntity : class
     {
         public List<TModel> Data { get; set; }
+        [QueryParameter]
         public FilterCollection<TEntity> Filters { get; set; }
         [QueryParameter]
         public string Search { get; set; }
