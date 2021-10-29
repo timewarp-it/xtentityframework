@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using xtEntityFramework.Attributes;
@@ -60,7 +61,7 @@ namespace xtEntityFramework.Extensions
 
             foreach (var prop in PropertyCache.GetProperties<TEntity>().Where(pi => Attribute.IsDefined(pi, typeof(SearchableAttribute))))
             {
-                var subprops = PropertyCache.GetProperties(prop.PropertyType).Where(pi => Attribute.IsDefined(pi, typeof(SearchableAttribute)));
+                var subprops = PropertyCache.GetProperties(prop.PropertyType).Where(pi => Attribute.IsDefined(pi, typeof(SearchableAttribute)) && pi.GetCustomAttribute<SearchableAttribute>()!.CascadingSearchEnabled);
                 foreach (var subprop in subprops)
                 {
                     searchfilters.Filters.Add(new Filter<TEntity>()
