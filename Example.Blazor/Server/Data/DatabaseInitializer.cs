@@ -102,25 +102,29 @@ namespace Example.Blazor.Server.Data
                 {
                     Name = "How to have luck",
                     Tutor = RandomTutor(),
-                    Students = RandomPeople()
+                    Students = RandomPeople(),
+                    Type = CourseType.Mandatory
                 },
                 new Course()
                 {
                     Name = "How to have bad luck",
                     Tutor = RandomTutor(),
-                    Students = RandomPeople()
+                    Students = RandomPeople(),
+                    Type= CourseType.Mandatory
                 },
                 new Course()
                 {
                     Name = "How to be rich",
                     Tutor = RandomTutor(),
-                    Students = RandomPeople()
+                    Students = RandomPeople(),
+                    Type = CourseType.Optional
                 },
                 new Course()
                 {
                     Name = "How to develop crazy stuff",
                     Tutor = RandomTutor(),
-                    Students = RandomPeople()
+                    Students = RandomPeople(),
+                    Type = CourseType.Optional
                 }
             };
 

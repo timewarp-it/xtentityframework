@@ -75,7 +75,7 @@ namespace xtEntityFramework
             }
         }
 
-        private static Expression MakeString(Expression source) => source.Type == typeof(string)
+        private static Expression MakeString(Expression source) => source.Type == typeof(string) || source.Type.IsEnum
             ? source
             : Expression.Call(source, "ToString", Type.EmptyTypes);
 

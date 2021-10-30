@@ -8,11 +8,11 @@ namespace Example.Blazor.Shared
     {
         [Filterable]
         public int Id { get; set; }
-        [Searchable]
+        [Searchable(CascadingSearchEnabled = true)]
         [Filterable]
         public string Firstname { get; set; }
         [DefaultOrder]
-        [Searchable]
+        [Searchable(CascadingSearchEnabled = true)]
         [Filterable]
         public string Lastname { get; set; }
         public List<Course> Courses { get; set; }

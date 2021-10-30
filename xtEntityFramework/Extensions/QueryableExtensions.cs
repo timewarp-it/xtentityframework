@@ -49,7 +49,7 @@ namespace xtEntityFramework.Extensions
             this IQueryable<TEntity> entities,
             Page<TEntity, TModel> page) where TEntity : class where TModel : class
         {
-            if (page.Search == null)
+            if (string.IsNullOrWhiteSpace(page.Search))
             {
                 return entities;
             }
@@ -64,21 +64,53 @@ namespace xtEntityFramework.Extensions
                 var subprops = PropertyCache.GetProperties(prop.PropertyType).Where(pi => Attribute.IsDefined(pi, typeof(SearchableAttribute)) && pi.GetCustomAttribute<SearchableAttribute>()!.CascadingSearchEnabled);
                 foreach (var subprop in subprops)
                 {
-                    searchfilters.Filters.Add(new Filter<TEntity>()
+                    if (prop.PropertyType.IsEnum)
                     {
-                        Comparison = Comparison.Contains,
-                        Name = $"{ prop.Name }.{ subprop.Name }",
-                        Value = page.Search
-                    });
+                        var matchingNames = Enum.GetNames(prop.PropertyType).ToList().Where(n => n.Contains(page.Search));
+                        foreach (var name in matchingNames)
+                        {
+                            searchfilters.Filters.Add(new Filter<TEntity>()
+                            {
+                                Comparison = Comparison.Eq,
+                                Name = prop.Name,
+                                Value = name
+                            });
+                        }
+                    }
+                    else
+                    { 
+                        searchfilters.Filters.Add(new Filter<TEntity>()
+                        {
+                            Comparison = Comparison.Contains,
+                            Name = $"{ prop.Name }.{ subprop.Name }",
+                            Value = page.Search
+                        });
+                    }
                 }
                 if (!subprops.Any())
-                {   
-                    searchfilters.Filters.Add(new Filter<TEntity>()
+                {
+                    if (prop.PropertyType.IsEnum)
                     {
-                        Comparison = Comparison.Contains,
-                        Name = prop.Name,
-                        Value = page.Search
-                    });
+                        var matchingNames = Enum.GetNames(prop.PropertyType).ToList().Where(n => n.Contains(page.Search));
+                        foreach (var name in matchingNames)
+                        {
+                            searchfilters.Filters.Add(new Filter<TEntity>()
+                            {
+                                Comparison = Comparison.Eq,
+                                Name = prop.Name,
+                                Value = name
+                            });
+                        }
+                    }
+                    else
+                    { 
+                        searchfilters.Filters.Add(new Filter<TEntity>()
+                        {
+                            Comparison = Comparison.Contains,
+                            Name = prop.Name,
+                            Value = page.Search
+                        });
+                    }
                 }
             }
 

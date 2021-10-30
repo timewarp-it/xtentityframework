@@ -16,5 +16,13 @@ namespace Example.Blazor.Shared
         public List<Enrollment> Enrollments { get; set; }
         [Searchable]
         public Tutor Tutor { get; set; }
+        [Searchable]
+        public CourseType Type { get; set; }
+    }
+
+    public enum CourseType
+    {
+        Mandatory = 0,
+        Optional = 1
     }
 }
