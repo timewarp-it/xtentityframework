@@ -4,8 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <ReleaseVersion>1.0.4</ReleaseVersion>
-    <Version>1.0.4</Version>
+    <ReleaseVersion>1.0.4.2</ReleaseVersion>
+    <Version>1.0.4.2</Version>
     <SynchReleaseVersion>false</SynchReleaseVersion>
     <Description>Easy to use Library to Filter, Search, Order and Paginate Data with EntityFramework.</Description>
   </PropertyGroup>

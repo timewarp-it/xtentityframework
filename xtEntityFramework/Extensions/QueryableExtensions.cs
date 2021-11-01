@@ -113,10 +113,11 @@ namespace xtEntityFramework.Extensions
                     }
                 }
             }
-
+            var originalFilters = page.Filters;
             page.Filters = searchfilters;
-
-            return entities.Filter(page);
+            entities = entities.Filter(page);
+            page.Filters = originalFilters;
+            return entities;
         }
 
         public static Page<TEntity, TModel> Map<TEntity, TModel>(
