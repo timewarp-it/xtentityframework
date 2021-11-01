@@ -57,7 +57,12 @@ namespace xtEntityFramework.Models
 
         public string ToQueryParameters()
         {
-            return string.Join("&", GetType().GetProperties().Where(p => Attribute.IsDefined(p, typeof(QueryParameterAttribute))).Select(p => $"{ p.Name }={ p.GetValue(this) }"));
+            var query = string.Join("&", GetType().GetProperties().Where(p => Attribute.IsDefined(p, typeof(QueryParameterAttribute))).Select(p => $"{ p.Name }={ p.GetValue(this) }"));
+            for (int i = 0; i < Filters.Filters.Count; i++)
+            {
+                query = string.Join("&", query, $"filters.filters[{ i }].name={ Filters.Filters[i].Name }", $"filters.filters[{ i }].comparison={ Filters.Filters[i].Comparison }", $"filters.filters[{ i }].value={ Filters.Filters[i].Value }");
+            }
+            return query;
         }
     }
 }

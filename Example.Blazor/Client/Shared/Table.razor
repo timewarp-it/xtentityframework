@@ -11,8 +11,6 @@ else
 {
     
     <Searcher Page="Page" TEntity="TEntity" TModel="TModel" Update="Update" />
-    <br />
-    <TopFilter Page="Page" TEntity="TEntity" TModel="TModel" Update="Update" />
     <table class="table">
         <thead>
             <tr>
@@ -55,12 +53,11 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-            Page = await Http.GetFromJsonAsync<Page<TEntity, TModel>>(RelativeURL);
+        Page = await Http.GetFromJsonAsync<Page<TEntity, TModel>>(RelativeURL);
     }
 
     private async Task Update()
     {
-        var bla = Page.ToQueryParameters();
         Page = await Http.GetFromJsonAsync<Page<TEntity, TModel>>($"{ RelativeURL }?{ Page.ToQueryParameters() }");
     }
 
