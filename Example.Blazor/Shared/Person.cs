@@ -7,6 +7,7 @@ namespace Example.Blazor.Shared
     public class Person
     {
         [Filterable]
+        [ListComparison]
         public int Id { get; set; }
         [Searchable(CascadingSearchEnabled = true)]
         [Filterable]

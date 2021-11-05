@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using xtEntityFramework.Attributes;
 using xtEntityFramework.Models;
 
 namespace xtEntityFramework
@@ -69,6 +72,19 @@ namespace xtEntityFramework
                 case Comparison.Contains:
                 case Comparison.StartsWith:
                 case Comparison.EndsWith:
+                    if(left.Type.UnderlyingSystemType.GetInterface(typeof(IEnumerable).ToString()) != null)
+                    {
+                        var innerType = left.Type.UnderlyingSystemType.GenericTypeArguments.First();
+                        MethodInfo innerMethod = typeof(PredicateBuilder).GetMethod(nameof(PredicateBuilder.BuildPredicate));
+                        innerMethod = innerMethod.MakeGenericMethod(innerType);
+
+                        var innerProperty = PropertyCache.GetProperties(innerType).Where(pi => Attribute.IsDefined(pi, typeof(ListComparisonAttribute))).FirstOrDefault().Name;
+                        var innerExp = (Expression)innerMethod.Invoke(null, new object[] { innerProperty, Comparison.Eq, value });
+
+                        MethodInfo method = typeof(Enumerable).GetMethods().Where(m => m.Name == "Any" && m.GetParameters().Length == 2).Single().MakeGenericMethod(innerType);
+
+                        return Expression.Call(method, left, innerExp);
+                    }
                     return Expression.Call(MakeString(left), comparison.ToString(), Type.EmptyTypes, Expression.Constant(value, typeof(string)));
                 default:
                     throw new NotSupportedException($"Invalid comparison operation '{comparison}'.");
