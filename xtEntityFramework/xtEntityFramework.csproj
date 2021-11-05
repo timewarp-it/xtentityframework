@@ -9,6 +9,9 @@
     <SynchReleaseVersion>false</SynchReleaseVersion>
     <Authors>Marius Steinbach</Authors>
     <Company>TIMEWARP IT Consulting GmbH</Company>
+    <Copyright>TIMEWARP IT Consulting GmbH 2021</Copyright>
+    <RepositoryUrl>https://github.com/timewarp-it/xtentityframework</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <Description>Easy to use Library to Filter, Search, Order and Paginate Data with EntityFramework.</Description>
   </PropertyGroup>
 
