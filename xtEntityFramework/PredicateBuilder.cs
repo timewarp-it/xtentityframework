@@ -72,7 +72,7 @@ namespace xtEntityFramework
                 case Comparison.Contains:
                 case Comparison.StartsWith:
                 case Comparison.EndsWith:
-                    if(left.Type.UnderlyingSystemType.GetInterface(typeof(IEnumerable).ToString()) != null)
+                    if(left.Type.UnderlyingSystemType.GetInterface(typeof(IEnumerable).ToString()) != null && left.Type.UnderlyingSystemType.GenericTypeArguments.Any())
                     {
                         var innerType = left.Type.UnderlyingSystemType.GenericTypeArguments.First();
                         MethodInfo innerMethod = typeof(PredicateBuilder).GetMethod(nameof(PredicateBuilder.BuildPredicate));
