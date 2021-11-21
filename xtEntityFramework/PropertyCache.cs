@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace xtEntityFramework
 {
-    internal static class PropertyCache
+    public static class PropertyCache
     {
         private static readonly ConcurrentDictionary<Type, Dictionary<string, PropertyInfo>> Cache = new();
 
