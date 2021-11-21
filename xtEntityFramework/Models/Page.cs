@@ -54,14 +54,32 @@ namespace xtEntityFramework.Models
             }
         }
 
-        public string ToQueryParameters()
+        public string ToQueryParameters(params string[]? Excludes)
         {
-            var query = string.Join("&", GetType().GetProperties().Where(p => Attribute.IsDefined(p, typeof(QueryParameterAttribute))).Select(p => $"{ p.Name }={ p.GetValue(this) }"));
+            var query = string.Join("&", GetType().GetProperties().Where(p => Attribute.IsDefined(p, typeof(QueryParameterAttribute)) && (Excludes == null || !Excludes!.Contains(p.Name))).Select(p => $"{ p.Name }={ p.GetValue(this) }"));
             for (int i = 0; i < Filters.Filters.Count; i++)
             {
                 query = string.Join("&", query, $"filters.filters[{ i }].name={ Filters.Filters[i].Name }", $"filters.filters[{ i }].comparison={ Filters.Filters[i].Comparison }", $"filters.filters[{ i }].value={ Filters.Filters[i].Value }");
             }
+            query = string.Join("&", query, $"filters.logic={ Filters.Logic }");
             return query;
+        }
+
+        public Dictionary<string, string> ToRouteParameters(params string[]? Excludes)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            foreach(var p in GetType().GetProperties().Where(p => Attribute.IsDefined( p, typeof(QueryParameterAttribute)) && (Excludes == null || !Excludes!.Contains(p.Name))))
+            {
+                parameters.Add(p.Name, p.GetValue(this)?.ToString()!);
+            }
+            for (int i = 0; i < Filters.Filters.Count; i++)
+            {
+                parameters.Add($"filters.filters[{ i }].name", Filters.Filters[i].Name!);
+                parameters.Add($"filters.filters[{ i }].comparison", Filters.Filters[i].Comparison.ToString());
+                parameters.Add($"filters.filters[{ i }].value", Filters.Filters[i].Value!);
+            }
+            parameters.Add("filters.logic", Filters.Logic.ToString());
+            return parameters;
         }
     }
 }

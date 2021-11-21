@@ -75,11 +75,11 @@ namespace xtEntityFramework
                     if(left.Type.UnderlyingSystemType.GetInterface(typeof(IEnumerable).ToString()) != null && left.Type.UnderlyingSystemType.GenericTypeArguments.Any())
                     {
                         var innerType = left.Type.UnderlyingSystemType.GenericTypeArguments.First();
-                        MethodInfo innerMethod = typeof(PredicateBuilder).GetMethod(nameof(PredicateBuilder.BuildPredicate));
+                        MethodInfo innerMethod = typeof(PredicateBuilder).GetMethod(nameof(PredicateBuilder.BuildPredicate))!;
                         innerMethod = innerMethod.MakeGenericMethod(innerType);
 
-                        var innerProperty = PropertyCache.GetProperties(innerType).Where(pi => Attribute.IsDefined(pi, typeof(ListComparisonAttribute))).FirstOrDefault().Name;
-                        var innerExp = (Expression)innerMethod.Invoke(null, new object[] { innerProperty, Comparison.Eq, value });
+                        var innerProperty = PropertyCache.GetProperties(innerType).Where(pi => Attribute.IsDefined(pi, typeof(ListComparisonAttribute))).FirstOrDefault()?.Name;
+                        var innerExp = (Expression)innerMethod.Invoke(null, new object[] { innerProperty!, Comparison.Eq, value })!;
 
                         MethodInfo method = typeof(Enumerable).GetMethods().Where(m => m.Name == "Any" && m.GetParameters().Length == 2).Single().MakeGenericMethod(innerType);
 
