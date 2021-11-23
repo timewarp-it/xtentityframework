@@ -19,17 +19,16 @@ namespace xtEntityFramework.Models
         public int CurrentPage { get; set; }
         public int Pages { get; set; }
         [QueryParameter]
-        public int Size { get; set; }
+        public int? Size { get; set; }
         public int Rows { get; set; }
-        public int From => (CurrentPage - 1) * Size + 1;
-        public int To => Math.Min(CurrentPage * Size, Rows);
+        public int From => (CurrentPage - 1) * (int)Size! + 1;
+        public int To => Math.Min(CurrentPage * (int)Size!, Rows);
 
         public Page()
         {
             Data = new List<TModel>();
             Filters = new FilterCollection<TEntity>();
             CurrentPage = 1;
-            Size = 10;
             Order = Order.Ascending;
             Search = "";
             Sort = "";
