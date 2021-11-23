@@ -21,8 +21,8 @@ namespace xtEntityFramework.Models
         [QueryParameter]
         public int? Size { get; set; }
         public int Rows { get; set; }
-        public int From => (CurrentPage - 1) * (int)Size! + 1;
-        public int To => Math.Min(CurrentPage * (int)Size!, Rows);
+        public int From => (CurrentPage - 1) * Size ?? 1 + 1;
+        public int To => Math.Min(CurrentPage * Size ?? 1, Rows);
 
         public Page()
         {

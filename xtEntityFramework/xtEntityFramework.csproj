@@ -4,8 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <ReleaseVersion>1.0.6.2</ReleaseVersion>
-    <Version>1.0.6.2</Version>
+    <ReleaseVersion>1.0.6.3</ReleaseVersion>
+    <Version>1.0.6.3</Version>
     <SynchReleaseVersion>false</SynchReleaseVersion>
     <Authors>Marius Steinbach</Authors>
     <Company>TIMEWARP IT Consulting GmbH</Company>
