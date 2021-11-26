@@ -32,7 +32,10 @@ namespace xtEntityFramework
 
         private static IReadOnlyDictionary<string, PropertyInfo> GetPropertiesInternal(Type type)
         {
-            return Cache.GetOrAdd(type, t => t.GetProperties().ToDictionary(property => property.Name, property => property));
+            return Cache.GetOrAdd(type, t => t.GetProperties(BindingFlags.Static |
+                          BindingFlags.FlattenHierarchy |
+                          BindingFlags.Instance |
+                          BindingFlags.Public).ToDictionary(property => property.Name, property => property));
         }
     }
 }

@@ -58,7 +58,7 @@ else
 
     private async Task Update()
     {
-        Page = await Http.GetFromJsonAsync<Page<TEntity, TModel>>($"{ RelativeURL }?{ Page.ToQueryParameters() }");
+        Page = await Http.GetFromJsonAsync<Page<TEntity, TModel>>($"{ RelativeURL }?{ Page.ToQueryParameters("") }");
     }
 
 }

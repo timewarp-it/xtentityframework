@@ -28,6 +28,7 @@ namespace Example.Blazor.Server.Controllers
         [HttpGet]
         public Page<Person, ListViewModel> Get([FromQuery] Page<Person, ListViewModel> page)
         {
+            page.Size = page.Size ?? 10;
             var people = dbContext.People.AsQueryable();
             people = people.Search(page);
             people = people.Filter(page);

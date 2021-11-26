@@ -194,10 +194,9 @@ namespace xtEntityFramework.Extensions
             MethodCallExpression resultExp;
 
             // if property is aggregated with func
-            if (typeof(TEntity).GetProperty(page.Sort)!.PropertyType.BaseType == typeof(LambdaExpression))
+            if (typeof(TEntity).GetProperty(page.Sort, BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.FlattenHierarchy)!.PropertyType.BaseType == typeof(LambdaExpression))
             {
-                orderByExp = (typeof(TEntity).GetProperty(page.Sort)!.GetValue(null, null) as LambdaExpression)!;
-                resultExp = Expression.Call(typeof(Queryable), orderMethod, new Type[] { typeof(TEntity), typeof(TEntity).GetProperty(page.Sort)!.PropertyType.GenericTypeArguments[0].GenericTypeArguments[1] }, entities.Expression, Expression.Quote(orderByExp));
+                orderByExp = (typeof(TEntity).GetProperty(page.Sort, BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.FlattenHierarchy)!.GetValue(null, null) as LambdaExpression)!;
             }
             else
             {
@@ -235,20 +234,17 @@ namespace xtEntityFramework.Extensions
                 {
                     orderByExp = Expression.Lambda(Expression.MakeMemberAccess(parameter, typeof(TEntity).GetProperty(page.Sort)!), parameter);
                 }
-                resultExp = Expression.Call(
-                    typeof(Queryable),
-                    orderMethod,
-                    new Type[] {
-                        typeof(TEntity),
-                        orderByExp.ReturnType
-                    },
-                    entities.Expression,
-                    Expression.Quote(orderByExp));
             }
 
-
-
-            return entities.Provider.CreateQuery<TEntity>(resultExp);
+            return entities.Provider.CreateQuery<TEntity>(Expression.Call(
+                typeof(Queryable),
+                orderMethod,
+                new Type[] {
+                    typeof(TEntity),
+                    orderByExp.ReturnType
+                },
+                entities.Expression,
+                Expression.Quote(orderByExp)));
 
         }
     }

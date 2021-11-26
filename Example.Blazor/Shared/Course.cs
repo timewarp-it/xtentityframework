@@ -4,10 +4,8 @@ using xtEntityFramework.Attributes;
 
 namespace Example.Blazor.Shared
 {
-    public class Course
+    public class Course : BaseEntity<Course>
     {
-        [Filterable]
-        public int Id { get; set; }
         [DefaultOrder]
         [Searchable]
         [Filterable]

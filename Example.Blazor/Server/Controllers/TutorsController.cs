@@ -30,6 +30,7 @@ namespace Example.Blazor.Server.Controllers
         [HttpGet]
         public Page<Tutor, ListViewModel> Get([FromQuery] Page<Tutor, ListViewModel> page)
         {
+            page.Size = page.Size ?? 10;
             var tutors = dbContext.Tutors.Include(t => t.CoursesLeading).Include(t => t.Enrollments).AsQueryable();
             tutors = tutors.Search(page);
             tutors = tutors.Filter(page);
