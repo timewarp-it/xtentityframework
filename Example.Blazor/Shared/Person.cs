@@ -22,9 +22,9 @@ namespace Example.Blazor.Shared
         {
             get
             {
-                return p => p.Id % 2 == 0
+                return p => ((p.Id % 2 == 0)
                     ? Shared.NumberType.Even
-                    : Shared.NumberType.Odd;
+                    : Shared.NumberType.Odd);
             }
         }
     }

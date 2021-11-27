@@ -194,9 +194,9 @@ namespace xtEntityFramework.Extensions
             MethodCallExpression resultExp;
 
             // if property is aggregated with func
-            if (typeof(TEntity).GetProperty(page.Sort, BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.FlattenHierarchy)!.PropertyType.BaseType == typeof(LambdaExpression))
+            if (PropertyCache.GetProperty<TEntity>(page.Sort)!.PropertyType.BaseType == typeof(LambdaExpression))
             {
-                orderByExp = (typeof(TEntity).GetProperty(page.Sort, BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.FlattenHierarchy)!.GetValue(null, null) as LambdaExpression)!;
+                orderByExp = (PropertyCache.GetProperty<TEntity>(page.Sort)!.GetValue(null, null) as LambdaExpression)!;
             }
             else
             {

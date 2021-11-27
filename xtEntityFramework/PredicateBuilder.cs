@@ -36,8 +36,19 @@ namespace xtEntityFramework
         public static Expression<Func<T, bool>> BuildPredicate<T>(string Name, Comparison Comparison, string Value)
         {
             var parameter = Expression.Parameter(typeof(T), "c");
-            var left = Name.Split('.')
-                .Aggregate((Expression)parameter, Expression.Property);
+            Expression left;
+            if (PropertyCache.GetProperty<T>(Name)!.GetMethod!.IsStatic)
+            {
+                var source = (PropertyCache.GetProperty<T>(Name)!.GetValue(null, null) as LambdaExpression);
+                left = source.Body;
+                parameter = source.Parameters[0];
+            }
+            else
+            {
+                left = Name.Split('.')
+                    .Aggregate((Expression)parameter, Expression.Property);
+            }
+
             var body = MapOperation(left, Comparison, Value);
             return Expression.Lambda<Func<T, bool>>(body, parameter);
         }
@@ -116,7 +127,7 @@ namespace xtEntityFramework
                         true => Enum.Parse(valueType, value),
                         _ => valueType == typeof(Guid)
                             ? Guid.Parse(value)
-                            : Convert.ChangeType(value, valueType)
+                                : Convert.ChangeType(value, valueType)
                     };
                 }
             }
