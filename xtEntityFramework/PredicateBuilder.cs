@@ -37,7 +37,7 @@ namespace xtEntityFramework
         {
             var parameter = Expression.Parameter(typeof(T), "c");
             Expression left;
-            if (PropertyCache.GetProperty<T>(Name)!.GetMethod!.IsStatic)
+            if (PropertyCache.GetProperty<T>(Name) != null && PropertyCache.GetProperty<T>(Name)!.GetMethod!.IsStatic)
             {
                 var source = (PropertyCache.GetProperty<T>(Name)!.GetValue(null, null) as LambdaExpression);
                 left = source.Body;
@@ -46,7 +46,7 @@ namespace xtEntityFramework
             else
             {
                 left = Name.Split('.')
-                    .Aggregate((Expression)parameter, Expression.Property);
+                    .Aggregate((Expression) parameter, Expression.Property);
             }
 
             var body = MapOperation(left, Comparison, Value);
