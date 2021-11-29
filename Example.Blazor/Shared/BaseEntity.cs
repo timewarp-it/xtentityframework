@@ -15,7 +15,6 @@ namespace Example.Blazor.Shared
         public int Id { get; set; }
         [Filterable]
         [Sortable]
-        [Searchable]
         public static Expression<Func<TEntity, NumberType>> NumberType
         {
             get

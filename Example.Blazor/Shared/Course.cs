@@ -7,9 +7,11 @@ namespace Example.Blazor.Shared
     public class Course : BaseEntity<Course>
     {
         [DefaultOrder]
-        [Searchable]
+        [Searchable(true)]
         [Filterable]
         public string Name { get; set; }
+        [Searchable(true)]
+        public string XXX { get; set; }
         public List<Person> Students { get; set; }
         public List<Enrollment> Enrollments { get; set; }
         [Searchable]

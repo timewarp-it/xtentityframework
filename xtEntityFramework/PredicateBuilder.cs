@@ -37,19 +37,49 @@ namespace xtEntityFramework
         {
             var parameter = Expression.Parameter(typeof(T), "c");
             Expression left;
+            Expression body;
             if (PropertyCache.GetProperty<T>(Name) != null && PropertyCache.GetProperty<T>(Name)!.GetMethod!.IsStatic)
             {
                 var source = (PropertyCache.GetProperty<T>(Name)!.GetValue(null, null) as LambdaExpression);
                 left = source.Body;
                 parameter = source.Parameters[0];
+                body = MapOperation(left, Comparison, Value);
+            }
+            else if(PropertyCache.GetProperty<T>(Name) != null && PropertyCache.GetProperty<T>(Name)!.PropertyType.GetInterfaces().Contains(typeof(IEnumerable)) && PropertyCache.GetProperty<T>(Name).PropertyType != typeof(string))
+            {
+                var ListType = PropertyCache.GetProperty<T>(Name)!.PropertyType.GenericTypeArguments[0];
+                var InnerParameter = Expression.Parameter(ListType, "d");
+
+                // create body "parameter.Any(cascadingsearchprop1.Contains(Value) || cascadingsearchprop2.Contains(Value) || ...)"
+                var CascadingSearchEnabledProperties = PropertyCache.GetProperties(ListType).Where(pi => Attribute.IsDefined(pi, typeof(SearchableAttribute)) && pi.GetCustomAttribute<SearchableAttribute>()!.CascadingSearchEnabled);
+                List<LambdaExpression> InnerExpressions = new List<LambdaExpression>();
+                foreach (var prop in CascadingSearchEnabledProperties)
+                {
+                    MethodInfo innerMethod = typeof(PredicateBuilder).GetMethod(nameof(PredicateBuilder.BuildPredicate))!;
+                    innerMethod = innerMethod.MakeGenericMethod(ListType);
+                    InnerExpressions.Add((LambdaExpression)innerMethod.Invoke(null, new object[] { prop.Name, Comparison.Contains, Value })!);
+                }
+
+                var orExpression = InnerExpressions.FirstOrDefault();
+                foreach (var expr in InnerExpressions.Skip(1))
+                {
+                    orExpression = Expression.Lambda(Expression.OrElse(orExpression.Body, new ExpressionParameterReplacer(expr.Parameters, orExpression.Parameters).Visit(expr.Body)), orExpression.Parameters);
+                }
+
+                MethodInfo AnyMethod = typeof(Enumerable).GetMethods().Where(m => m.Name == "Any" && m.GetParameters().Length == 2).Single().MakeGenericMethod(ListType);
+
+                left = Name.Split('.')
+                    .Aggregate((Expression)parameter, Expression.Property);
+
+                body = Expression.Call(AnyMethod, left, orExpression);
             }
             else
             {
                 left = Name.Split('.')
                     .Aggregate((Expression) parameter, Expression.Property);
+                body = MapOperation(left, Comparison, Value);
             }
 
-            var body = MapOperation(left, Comparison, Value);
             return Expression.Lambda<Func<T, bool>>(body, parameter);
         }
 
