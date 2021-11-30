@@ -26,16 +26,24 @@ namespace xtEntityFramework
                 : null;
 
         public static PropertyInfo? GetProperty(Type type, string? propertyName) =>
-            GetPropertiesInternal(type).TryGetValue(propertyName!, out var propertyInfo)
+            GetPropertiesInternal(type)
+                .TryGetValue(propertyName!, out var propertyInfo)
                 ? propertyInfo
                 : null;
 
         private static IReadOnlyDictionary<string, PropertyInfo> GetPropertiesInternal(Type type)
         {
-            return Cache.GetOrAdd(type, t => t.GetProperties(BindingFlags.Static |
-                          BindingFlags.FlattenHierarchy |
-                          BindingFlags.Instance |
-                          BindingFlags.Public).ToDictionary(property => property.Name, property => property));
+            return Cache.GetOrAdd(
+                type,
+                t =>
+                    t.GetProperties(
+                        BindingFlags.Static |
+                        BindingFlags.FlattenHierarchy |
+                        BindingFlags.Instance |
+                        BindingFlags.Public)
+                        .ToDictionary(property =>
+                            property.Name,
+                            property => property));
         }
     }
 }

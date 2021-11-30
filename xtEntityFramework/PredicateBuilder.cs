@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using xtEntityFramework.Attributes;
 using xtEntityFramework.Models;
 
+[assembly: InternalsVisibleTo("xtEntityFramework.Tests")]
 namespace xtEntityFramework
 {
     internal class ExpressionParameterReplacer : ExpressionVisitor
@@ -41,11 +43,11 @@ namespace xtEntityFramework
             if (PropertyCache.GetProperty<T>(Name) != null && PropertyCache.GetProperty<T>(Name)!.GetMethod!.IsStatic)
             {
                 var source = (PropertyCache.GetProperty<T>(Name)!.GetValue(null, null) as LambdaExpression);
-                left = source.Body;
+                left = source!.Body;
                 parameter = source.Parameters[0];
                 body = MapOperation(left, Comparison, Value);
             }
-            else if(PropertyCache.GetProperty<T>(Name) != null && PropertyCache.GetProperty<T>(Name)!.PropertyType.GetInterfaces().Contains(typeof(IEnumerable)) && PropertyCache.GetProperty<T>(Name).PropertyType != typeof(string))
+            else if(PropertyCache.GetProperty<T>(Name) != null && PropertyCache.GetProperty<T>(Name)!.PropertyType.GetInterfaces().Contains(typeof(IEnumerable)) && PropertyCache.GetProperty<T>(Name)!.PropertyType != typeof(string))
             {
                 var ListType = PropertyCache.GetProperty<T>(Name)!.PropertyType.GenericTypeArguments[0];
                 var InnerParameter = Expression.Parameter(ListType, "d");
@@ -63,7 +65,7 @@ namespace xtEntityFramework
                 var orExpression = InnerExpressions.FirstOrDefault();
                 foreach (var expr in InnerExpressions.Skip(1))
                 {
-                    orExpression = Expression.Lambda(Expression.OrElse(orExpression.Body, new ExpressionParameterReplacer(expr.Parameters, orExpression.Parameters).Visit(expr.Body)), orExpression.Parameters);
+                    orExpression = Expression.Lambda(Expression.OrElse(orExpression!.Body, new ExpressionParameterReplacer(expr.Parameters, orExpression.Parameters).Visit(expr.Body)), orExpression.Parameters);
                 }
 
                 MethodInfo AnyMethod = typeof(Enumerable).GetMethods().Where(m => m.Name == "Any" && m.GetParameters().Length == 2).Single().MakeGenericMethod(ListType);
@@ -71,7 +73,7 @@ namespace xtEntityFramework
                 left = Name.Split('.')
                     .Aggregate((Expression)parameter, Expression.Property);
 
-                body = Expression.Call(AnyMethod, left, orExpression);
+                body = Expression.Call(AnyMethod, left, orExpression!);
             }
             else
             {

@@ -191,7 +191,6 @@ namespace xtEntityFramework.Extensions
 
             var parameter = Expression.Parameter(typeof(TEntity), "p");
             LambdaExpression orderByExp;
-            MethodCallExpression resultExp;
 
             // if property is aggregated with func
             if (PropertyCache.GetProperty<TEntity>(page.Sort)!.PropertyType.BaseType == typeof(LambdaExpression))
