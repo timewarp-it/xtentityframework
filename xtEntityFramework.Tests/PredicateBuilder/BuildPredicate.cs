@@ -11,19 +11,19 @@ using xtEntityFramework.Tests.TestData.PropertyCache;
 using Xunit;
 using SUT = xtEntityFramework;
 
-namespace xtEntityFramework.Tests.PropertyCache
+namespace xtEntityFramework.Tests.PredicateBuilder
 {
     public class BuildPredicate_Should
     {
-        //[Theory]
-        //[ClassData(typeof(BuildPredicate))]
-        //public void ReturnPropertiesOfType<T>(T type, string Name, Comparison Comparison, string Value)
-        //{
-        //    // arrange
-        //    // act
-        //    var predicate = PredicateBuilder.BuildPredicate<T>(Name, Comparison, Value);
-        //    // assert
-        //    predicate.Should().Equals(exp);
-        //}
+        [Theory]
+        [ClassData(typeof(BuildPredicate))]
+        public void ReturnPropertiesOfType<T>(T type, string Name, Comparison Comparison, string Value)
+        {
+            // arrange
+            // act
+            var predicate = xtEntityFramework.PredicateBuilder.BuildPredicate<T>(Name, Comparison, Value);
+            // assert
+            predicate.Should().Equals(null);
+        }
     }
 }

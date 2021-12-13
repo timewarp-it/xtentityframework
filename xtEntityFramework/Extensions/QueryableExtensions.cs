@@ -125,15 +125,16 @@ namespace xtEntityFramework.Extensions
             IConfigurationProvider config,
             Page<TEntity, TModel> page) where TEntity : class where TModel : class
         {
+            int count = entities.Count();
             page.Size = page.Size ?? 1;
             // invalid page will return page 1
-            page.CurrentPage = (int)Math.Ceiling((double)entities.Count() / (int)page.Size!) >= page.CurrentPage
+            page.CurrentPage = (int)Math.Ceiling((double)count / (int)page.Size!) >= page.CurrentPage
                 ? page.CurrentPage
                 : 1;
             return new Page<TEntity, TModel>
             {
-                Rows = entities.Count(),
-                Pages = (int)Math.Ceiling((double)entities.Count() / (int)page.Size!),
+                Rows = count,
+                Pages = (int)Math.Ceiling((double)count / (int)page.Size!),
                 Data = entities.Page(page.CurrentPage, (int)page.Size!).ProjectTo<TModel>(config).ToList(),
                 Filters = page.Filters,
                 Search = page.Search,

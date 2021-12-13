@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Attributes\DefaultOrderAttribute\" />
     <Folder Include="Attributes\SearchableAttribute\" />
     <Folder Include="ComparisonCache\" />
     <Folder Include="Extensions\QueryableExtensions\" />

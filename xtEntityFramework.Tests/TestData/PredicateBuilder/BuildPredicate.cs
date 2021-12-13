@@ -15,9 +15,16 @@ namespace xtEntityFramework.Tests.TestData.PropertyCache
         {
             new object[]
             {
-                typeof(string),
+                "",
                 "Length",
                 Comparison.Eq,
+                "5"
+            },
+            new object[]
+            {
+                DateTime.UtcNow,
+                "Day",
+                Comparison.Gt,
                 "5"
             }
         };
