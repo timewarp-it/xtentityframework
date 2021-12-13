@@ -4,8 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <ReleaseVersion>1.2.1</ReleaseVersion>
-    <Version>1.2.1</Version>
+    <ReleaseVersion>1.2.2</ReleaseVersion>
+    <Version>1.2.2</Version>
     <SynchReleaseVersion>false</SynchReleaseVersion>
     <Authors>Marius Steinbach</Authors>
     <Company>TIMEWARP IT Consulting GmbH</Company>
