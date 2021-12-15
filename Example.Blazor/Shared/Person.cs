@@ -13,6 +13,7 @@ namespace Example.Blazor.Shared
         [DefaultOrder]
         [Searchable(CascadingSearchEnabled = true)]
         [Filterable]
+        [FullTextSearchEnabled]
         public string Lastname { get; set; }
         public List<Course> Courses { get; set; }
         public List<Enrollment> Enrollments { get; set; }

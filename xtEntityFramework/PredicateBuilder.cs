@@ -128,6 +128,20 @@ namespace xtEntityFramework
 
                         return Expression.Call(method, left, innerExp);
                     }
+                    if ((left as MemberExpression).Member.GetCustomAttribute(typeof(FullTextSearchEnabledAttribute)) != null)
+                    {
+                        var sqlServerDbFunctionsExtensions = Type.GetType("Microsoft.EntityFrameworkCore.SqlServerDbFunctionsExtensions, Microsoft.EntityFrameworkCore.SqlServer");
+                        var efFunctions = PropertyCache.GetProperty(Type.GetType("Microsoft.EntityFrameworkCore.EF, Microsoft.EntityFrameworkCore"), "Functions").GetValue(null);
+                        var callExpression =  Expression.Call(
+                            sqlServerDbFunctionsExtensions,
+                            "Contains",
+                            Type.EmptyTypes,
+                            Expression.Constant(efFunctions),
+                            left,
+                            Expression.Constant($"\"*{value}*\"")
+                        );
+                        return callExpression;
+                    }
                     return Expression.Call(MakeString(left), comparison.ToString(), Type.EmptyTypes, Expression.Constant(value, typeof(string)));
                 default:
                     throw new NotSupportedException($"Invalid comparison operation '{comparison}'.");

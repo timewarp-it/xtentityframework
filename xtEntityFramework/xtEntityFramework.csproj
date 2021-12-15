@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <ReleaseVersion>1.2.2</ReleaseVersion>
-    <Version>1.2.2</Version>
+    <ReleaseVersion>1.3.0</ReleaseVersion>
+    <Version>1.3.0</Version>
     <SynchReleaseVersion>false</SynchReleaseVersion>
     <Authors>Marius Steinbach</Authors>
     <Company>TIMEWARP IT Consulting GmbH</Company>
@@ -22,7 +22,6 @@
     <None Remove="AutoMapper" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Attributes\" />
     <Folder Include="Extensions\" />
     <Folder Include="Models\" />
   </ItemGroup>
