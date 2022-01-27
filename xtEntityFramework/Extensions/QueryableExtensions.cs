@@ -126,7 +126,7 @@ namespace xtEntityFramework.Extensions
             Page<TEntity, TModel> page) where TEntity : class where TModel : class
         {
             int count = entities.Count();
-            page.Size = page.Size ?? 1;
+            page.Size = page.Size ?? count;
             // invalid page will return page 1
             page.CurrentPage = (int)Math.Ceiling((double)count / (int)page.Size!) >= page.CurrentPage
                 ? page.CurrentPage
